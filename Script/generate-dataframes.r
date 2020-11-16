@@ -68,7 +68,7 @@ data.N <- rna.expr.data.N.clean
 data.C <- rna.expr.data.C.clean
 
 write.csv(data.N,
-          "./TCGA-LUAD/TCGA-LUAD_rna_expr_data_N_clean.csv")
+          paste0(DATA_FOLD,"data/dataN.csv"))
 write.csv(data.C,
-          "./TCGA-LUAD/TCGA-LUAD_rna_expr_data_C_clean.csv")
+          paste0(DATA_FOLD,"data/dataC.csv"))
 
