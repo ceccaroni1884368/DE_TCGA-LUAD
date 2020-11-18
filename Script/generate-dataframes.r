@@ -72,3 +72,5 @@ write.csv(data.N,
 write.csv(data.C,
           paste0(DATA_FOLD,"data/dataC.csv"))
 
+rm(list=setdiff(ls(), c("data.N", "data.C", "DATA_FOLD")))
+save.image(file= paste0(DATA_FOLD,"data/dataCN.RData"))

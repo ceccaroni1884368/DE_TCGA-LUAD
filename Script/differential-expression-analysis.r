@@ -1,8 +1,8 @@
-
 #######################################
 # Differential expression (DE) analysis
 #######################################
 
+library(EnhancedVolcano)
 
 # Settings ----------------------------------------------------------------
 
@@ -28,7 +28,7 @@ data.C.log2.mean <- apply(data.C.log2, 1, mean)
 limit <- max(data.N.log2.mean, data.C.log2.mean)
 
 ## Scatter plot
-plot(data.C.log2.mean ~ data.N.log2.mean, xlab = "N", ylab = "C",
+plot(data.C.log2.mean ~ data.N.log2.mean, xlab = "Normal", ylab = "Cancer",
      main = "Scatter", xlim = c(0, limit), ylim = c(0, limit))
 ## Diagonal line
 abline(0, 1, col = "red")
@@ -38,10 +38,10 @@ abline(0, 1, col = "red")
 
 ## Compute biological significance
 ## Difference between the means of the conditions
-fold <- data.N.log2.mean - data.C.log2.mean
+FC <- data.C.log2.mean - data.N.log2.mean
 
 ## Histogram of the fold differences
-hist(fold, col = "gray")
+hist(FC, col = "gray")
 
 
 
@@ -64,31 +64,42 @@ for(i in 1 : nrow(data.C)) { # For each gene :
 }
 
 
+# Correction for multiple comparison --------------------------------------
 ## Histogram of p-values (-log10)
 hist(-log10(pvalue), col = "gray")
 
+## FDR
+FDR <-p.adjust(pvalue, method = "fdr")
+
+## Histogram of p-values (-log10)
+hist(-log10(FDR), col = "gray")
+
+
+# Thresholds selection ----------------------------------------------------
+
+FC.threshold <- 2.5
+FDR.threshold <- 10e-16
+
 ## Volcano: put the biological significance (fold-change)
 ## and statistical significance (p-value) in one plot
-plot(fold, -log10(pvalue), main = "Volcano")
+plot(FC, -log10(FDR), main = "Volcano")
 
-fold_cutoff <- 2.5
-pvalue_cutoff <- 0.05
-abline(v = fold_cutoff, col = "blue", lwd = 3)
-abline(v = -fold_cutoff, col = "red", lwd = 3)
-abline(h = -log10(pvalue_cutoff), col = "green", lwd = 3)
+abline(v = FC.threshold, col = "blue", lwd = 3)
+abline(v = -FC.threshold, col = "red", lwd = 3)
+abline(h = -log10(FDR.threshold), col = "green", lwd = 3)
 
 
 
 # Screen for the genes that satisfy the filtering criteria ----------------
 
 ## Fold-change filter for "biological" significance
-filter.by.fold <- abs(fold) >= fold_cutoff
+filter.by.FC <- abs(FC) >= FC.threshold
 
 ## P-value filter for "statistical" significance
-filter.by.pvalue <- pvalue <= pvalue_cutoff
+filter.by.FDR <- FDR <= FDR.threshold
 
 ## Combined filter (both biological and statistical)
-filter.combined <- filter.by.fold & filter.by.pvalue
+filter.combined <- filter.by.FC & filter.by.FDR
 
 data.N.DE <- data.N[filter.combined,]
 data.C.DE <- data.C[filter.combined,]
@@ -97,25 +108,44 @@ dim(data.N.DE)
 dim(data.C.DE)
 
 
-## Let's generate the volcano plot again,
-## highlighting the significantly differential expressed genes
-plot(fold, -log10(pvalue), main = "Volcano #2")
-points (fold[filter.combined], -log10(pvalue[filter.combined]),
-        pch = 16, col = "red")
+# Volcano Plot ------------------------------------------------------------
 
-## Highlighting up-regulated in red and down-regulated in blue
-plot(fold, -log10(pvalue), main = "Volcano #3")
-points (fold[filter.combined & fold < 0],
-        -log10(pvalue[filter.combined & fold < 0]),
-        pch = 16, col = "red")
-points (fold[filter.combined & fold > 0],
-        -log10(pvalue[filter.combined & fold > 0]),
-        pch = 16, col = "blue")
+res <- as.data.frame(cbind(FC, FDR))
+EnhancedVolcano(res,
+                lab = rownames(res),
+                x = 'FC',
+                y = 'FDR',
+                title = 'Cancer versus Normal',
+                pCutoff = FDR.threshold,
+                FCcutoff = FC.threshold,
+                pointSize = 3.0,
+                labSize = 0,
+                shape = c(1, 4, 23, 25),
+                colAlpha = 1)
 
 
 # Save the DE genes -------------------------------------------------------
+
+gene.ID.DE <- rownames(data.C.DE)
+mean.FC.DE <- FC[filter.by.FC]
+rm(list=setdiff(ls(), c("data.N.DE", "data.C.DE",
+                        "FC.threshold", "FDR.threshold",
+                        "gene.ID.DE", "mean.FC.DE",
+                        "DATA_FOLD")))
+
+
+## data.N.DE: Normal tissue data of Differentially expressed genes (DEGs)
+## data.C.DE: Cancer tissue data of DEGs
+## gene.ID.DE: gene IDs of DEGs
+###### gene_symDe: gene symbols of DEGs
+## FDR.threshold: FDR max (parameter used to define DEGs)
+## FC.threshold: minimun fold change (parameter used to define DEGs)
+## mean.FC.DE: average Fold Chance of DEGs among the patients
+
+
 write.csv(data.N.DE,
           paste0(DATA_FOLD,"dataN_DE.csv"))
 write.csv(data.C.DE,
           paste0(DATA_FOLD,"dataC_DE.csv"))
 
+save.image(file= paste0(DATA_FOLD,"dataCN_DE.RData"))
