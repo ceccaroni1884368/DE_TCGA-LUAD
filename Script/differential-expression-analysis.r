@@ -2,7 +2,14 @@
 # Differential expression (DE) analysis
 #######################################
 
+#if (!requireNamespace('BiocManager', quietly = TRUE))
+#  install.packages('BiocManager')
+#
+#BiocManager::install('EnhancedVolcano')
+#install.packages("GeoTcgaData")
 library(EnhancedVolcano)
+library("GeoTcgaData")
+library(R.matlab)
 
 # Settings ----------------------------------------------------------------
 
@@ -78,7 +85,7 @@ hist(-log10(FDR), col = "gray")
 # Thresholds selection ----------------------------------------------------
 
 FC.threshold <- 2.5
-FDR.threshold <- 10e-16
+FDR.threshold <- 0.05
 
 ## Volcano: put the biological significance (fold-change)
 ## and statistical significance (p-value) in one plot
@@ -116,11 +123,12 @@ EnhancedVolcano(res,
                 x = 'FC',
                 y = 'FDR',
                 title = 'Cancer versus Normal',
+                subtitle = '',
+                caption = '',
                 pCutoff = FDR.threshold,
                 FCcutoff = FC.threshold,
                 pointSize = 3.0,
                 labSize = 0,
-                shape = c(1, 4, 23, 25),
                 colAlpha = 1)
 
 
@@ -132,12 +140,12 @@ rm(list=setdiff(ls(), c("data.N.DE", "data.C.DE",
                         "FC.threshold", "FDR.threshold",
                         "gene.ID.DE", "mean.FC.DE",
                         "DATA_FOLD")))
-
+gene.sym.DE <- id_conversion_vector("Ensembl_ID","symbol", gene.ID.DE)
 
 ## data.N.DE: Normal tissue data of Differentially expressed genes (DEGs)
 ## data.C.DE: Cancer tissue data of DEGs
 ## gene.ID.DE: gene IDs of DEGs
-###### gene_symDe: gene symbols of DEGs
+## gene.sym.DE: gene symbols of DEGs
 ## FDR.threshold: FDR max (parameter used to define DEGs)
 ## FC.threshold: minimun fold change (parameter used to define DEGs)
 ## mean.FC.DE: average Fold Chance of DEGs among the patients
@@ -149,3 +157,14 @@ write.csv(data.C.DE,
           paste0(DATA_FOLD,"dataC_DE.csv"))
 
 save.image(file= paste0(DATA_FOLD,"dataCN_DE.RData"))
+
+## Matlab export
+filename <- paste0(DATA_FOLD,"data_DE.mat")
+writeMat(filename,
+         dataNDe = as.matrix(data.N.DE),
+         dataCDe = as.matrix(data.C.DE),
+         gene_IDDe = gene.ID.DE,
+         gene_symDe = gene.sym.DE,
+         fdrt = FDR.threshold,
+         fct = FC.threshold,
+         mFCDe = mean.FC.DE)
