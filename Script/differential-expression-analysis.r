@@ -155,6 +155,8 @@ write.csv(data.N.DE,
           paste0(DATA_FOLD,"dataN_DE.csv"))
 write.csv(data.C.DE,
           paste0(DATA_FOLD,"dataC_DE.csv"))
+write.csv(gene.sym.DE,
+          paste0(DATA_FOLD,"gene.sym.DE.csv"))
 
 save.image(file= paste0(DATA_FOLD,"dataCN_DE.RData"))
 
