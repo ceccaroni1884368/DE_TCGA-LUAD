@@ -12,8 +12,13 @@ load('../TCGA-LUAD/data/data_DE.mat')
 % fct: minimun fold change (parameter used to define DEGs)
 % mFCDe: average Fold Chance of DEGs among the patients
 
+%% Apply log2 to dataNDe and dataCDe
+% ?!?!?
+dataNDe = log2(dataNDe);
+dataCDe = log2(dataCDe);
+
 %% Parameter 
-Z_th = 3; %  Z threshold
+Z_th = 5; %  Z threshold
 
 %% Correlation analysis and  co-expression network figure
 %
@@ -89,7 +94,7 @@ end
 %% Only considering degree index, are the hubs up or down regulated?
 CentrMeasures = 'degree';
 index = centrality(G,CentrMeasures);
-Y = prctile(index,99);
+Y = prctile(index,95);
 Hubs_ind = find(index>Y);
 HubsFC = mFCDe(Hubs_ind);
 figure; h3 = plot(G,'Layout','force','UseGravity',true);

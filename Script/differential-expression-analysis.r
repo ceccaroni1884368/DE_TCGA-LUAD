@@ -8,7 +8,7 @@
 #BiocManager::install('EnhancedVolcano')
 #install.packages("GeoTcgaData")
 library(EnhancedVolcano)
-library("GeoTcgaData")
+library(GeoTcgaData)
 library(R.matlab)
 
 # Settings ----------------------------------------------------------------
@@ -122,14 +122,18 @@ EnhancedVolcano(res,
                 lab = rownames(res),
                 x = 'FC',
                 y = 'FDR',
+                xlab = bquote(~Log[2]~ 'fold change'),
                 title = 'Cancer versus Normal',
                 subtitle = '',
                 caption = '',
                 pCutoff = FDR.threshold,
                 FCcutoff = FC.threshold,
-                pointSize = 3.0,
+                pointSize = 2.0,
                 labSize = 0,
-                colAlpha = 1)
+                colAlpha = 1,
+                legendPosition = 'right',
+                legendLabSize = 12,
+                legendIconSize = 4.0)
 
 
 # Save the DE genes -------------------------------------------------------
