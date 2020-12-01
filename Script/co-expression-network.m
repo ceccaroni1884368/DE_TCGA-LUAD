@@ -18,7 +18,7 @@ dataNDe = log2(dataNDe);
 dataCDe = log2(dataCDe);
 
 %% Parameter 
-PCC_th = .8; % Pearson Correlation Coefficient (PCC) threshold
+PCC_th = .7; % Pearson Correlation Coefficient (PCC) threshold
 
 %% Correlation analysis and  co-expression network figure
 % Normal data analysis

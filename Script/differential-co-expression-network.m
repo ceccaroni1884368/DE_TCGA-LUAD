@@ -106,3 +106,25 @@ end
 title(CentrMeasures)
 
 gene_symDe(HubsFC<0)
+gene_symDe(HubsFC>0)
+
+%% Subgraph
+CentrMeasures = 'degree';
+node = 15;
+sG = subgraph(G, [node; neighbors(G,node)]);
+index = centrality(sG,CentrMeasures);
+Y = prctile(index,95);
+Hubs_ind = find(index>Y);
+HubsFC = mFCDe(Hubs_ind);
+figure; h3 = plot(sG,'Layout','force','UseGravity',true);
+highlight(h3,Hubs_ind,'NodeColor','r','Marker','h','MarkerSize',4)
+labelnode(h3,[1:numnodes(sG)], gene_symDe([node; neighbors(G,node)]))
+
+if find(HubsFC<0)
+    highlight(h3,Hubs_ind((HubsFC<0)),'NodeColor','cyan','Marker','h','MarkerSize',4)
+end
+
+title(CentrMeasures)
+
+gene_symDe(HubsFC<0)
+gene_symDe(HubsFC>0)
