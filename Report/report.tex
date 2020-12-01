@@ -82,7 +82,7 @@ Lung adenocarcinoma (LUAD) is the leading cause of cancer-related death worldwid
 
 RNA-sequencing was performed on LUAD affected tissue and paired adjacent to noncancerous tissue samples. The Cancer Genome Atlas project-LUAD dataset was used to obtain an intersection of differential expressed genes.
 
-In our stydy we identified $494$ candidate genes ($237$ upregulated and $257$ downregulated genes) with fold change $\ge 2.5$ and $p \le 0.05$.
+In our stydy we identified $494$ candidate genes ($237$ upregulated and $257$ downregulated genes) with $|$ fold change$\, | \ge 2.5$ and $p \le 0.05$.
 
 %----------------------------------------------------------------------------------------
 
@@ -104,12 +104,12 @@ Lung cancer is the leading cause of cancer-related deaths globally \cite{article
 
 \section{Materials and Methods}
 
-
+All code and key data files for this analyses are available in the \href{http://www.github.com}{GitHub folder} \footnote{http://www.github.com}.
 
 % DATA ------------------------------------------------
 
 \subsection{Data}
-The data used in our research come from https://portal.gdc.cancer.gov/. The TCGA-LUAD project is selected in the GDC data portal. The data are filtered with Transcriptome Profiling as data category, Gene Expression Quantification as data type and HTSeq-FPKM as workflow type. Finally, only patients for whom cancer and normal tissue files are available are selected. A data set with $57$ patients and $17224$ genes is obtained for both normal condition (dataN) and cancer condition (dataC).
+The data used in our research come from \url{https://portal.gdc.cancer.gov/}. The TCGA-LUAD project is selected in the GDC data portal. The data are filtered with Transcriptome Profiling as data category, Gene Expression Quantification as data type and HTSeq-FPKM as workflow type. Finally, only patients for whom cancer and normal tissue files are available are selected. A data set with $57$ patients and $17224$ genes is obtained for both normal condition (dataN) and cancer condition (dataC).
 
 % DEGs------------------------------------------------
 
@@ -121,9 +121,9 @@ $$
 
 The values obtained are shown on the following histogram (Figure~\ref{fig:1}).
 
-\begin{figure}[h!]
+\begin{figure}[!h]
 \centering 
-\includegraphics[width=0.6\columnwidth]{Hist_FC} 
+\includegraphics[width=0.5\columnwidth]{Hist_FC} 
 \caption[Histogram of FC]{} % The text in the square bracket is the caption for the list of figures while the text in the curly brackets is the figure caption
 \label{fig:1} 
 \end{figure}
@@ -138,16 +138,16 @@ So we used a t-test to calculate the p-value.
 We applied the "fdr" method for correction multiple comparison. 
 The values obtained are shown on the following histogram (Figure~\ref{fig:2}).
 
-\begin{figure}[h!]
+\begin{figure}[!h]
 \centering 
-\includegraphics[width=0.6\columnwidth]{Hist_FDR} 
+\includegraphics[width=0.5\columnwidth]{Hist_FDR} 
 \caption[Histogram of $-\log{(FDR)}$]{} % The text in the square bracket is the caption for the list of figures while the text in the curly brackets is the figure caption
 \label{fig:2} 
 \end{figure}
 
-We have selected $ 2.5 $ for the fold-change and $ 0.05 $ for the fdr as threshold values. The result is the volcano plot in Figure~\ref{fig:3}.
+We have selected  $|$ fold change$\, | \ge 2.5$ and $fdr \le 0.05$ as threshold values. The result is the volcano plot in Figure~\ref{fig:3}.
 
-\begin{figure}[h!]
+\begin{figure}[!h]
 \centering 
 \includegraphics[width=1\columnwidth]{VolcanoDEGs} 
 \caption[Volcano Plot]{} % The text in the square bracket is the caption for the list of figures while the text in the curly brackets is the figure caption
@@ -161,7 +161,7 @@ In the end $494$ genes ($237$ upregulated and $257$ downregulated genes) were fo
 \subsection{Co-expression networks}
 
 
-\begin{figure}[h!]
+\begin{figure}[!h]
 \centering
 \subfloat[Co-expression network in normal cells]{\includegraphics[width=.45\columnwidth]{co-net_N.jpg}} \quad
 \subfloat[Co-expression network in cancer cells]{\includegraphics[width=.45\columnwidth]{co-net_C.jpg}\label{fig:ipsum}} 
@@ -173,22 +173,36 @@ In the end $494$ genes ($237$ upregulated and $257$ downregulated genes) were fo
 % Differential Co-NET------------------------------------------------
 
 \subsection{Differential Co-expressed Network}
+Instead of establishing that co-expression is significant in one condition and not in the other, we are now going to test directly if the change in co-expression is significant using differential networks: they encode changes in the connections among nodes between the conditions or states.\\
 
-\begin{figure}[h!]
+To calculate the differential correlations, first we have stabilized the variance  of sample correlation coefficients in each condition applying the following Fisher z-transformation:
+
+$$
+z_{1 \text{or} 2} = \frac{1}{2}\log{\Bigl(\frac{1+\rho_{1 \text{or} 2}}{1-\rho_{1 \text{or} 2}}\Bigr)}
+$$
+
+then we compute z-scores to evaluate the correlation:
+
+$$
+Z = \frac{z_1 - z_2}{\sqrt{\frac{1}{n_1 - 3}+\frac{1}{n_2 - 3}}}
+$$
+
+where $n_1$ and $n_2$ represent the sample size for each of the conditions. Finally we set $|Z|> 5$ as threshold; we get the graph of the Figure~\ref{fig:5}.
+\begin{figure}[!h]
 \centering 
 \includegraphics[width=0.6\columnwidth]{diff-co-net} 
 \caption[Differentially Co-expression network]{Differentially Co-expression network} % The text in the square bracket is the caption for the list of figures while the text in the curly brackets is the figure caption
 \label{fig:5} 
 \end{figure}
 
-\begin{figure}[h!]
+\begin{figure}[!h]
 \centering 
 \includegraphics[width=0.6\columnwidth]{diff-co-net_deg_distr} 
 \caption[Differentially Co-expression network Degree Distribution]{Differentially Co-expression network Degree Distribution} % The text in the square bracket is the caption for the list of figures while the text in the curly brackets is the figure caption
-\label{fig:5} 
+\label{fig:6} 
 \end{figure}
 
-\begin{figure}[h!]
+\begin{figure}[!h]
 \centering
 \subfloat[Degree]{\includegraphics[width=.45\columnwidth]{diff-co-net_degree.jpg}} \quad
 \subfloat[Closeness]{\includegraphics[width=.45\columnwidth]{diff-co-net_closeness.jpg}\label{fig:ipsum}} \\
@@ -204,11 +218,11 @@ In the end $494$ genes ($237$ upregulated and $257$ downregulated genes) were fo
 %----------------------------------------------------------------------------------------
 
 \section{Results and Discussion}
-\begin{figure}[h!]
+\begin{figure}[!h]
 \centering 
 \includegraphics[width=0.6\columnwidth]{diff-co-net_compare_hub_sets} 
 \caption[Differentially Co-expression network compare hub sets]{Differentially Co-expression network compare hub sets} % The text in the square bracket is the caption for the list of figures while the text in the curly brackets is the figure caption
-\label{fig:5} 
+\label{fig:7} 
 \end{figure}
 
 
