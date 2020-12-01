@@ -109,8 +109,18 @@ gene_symDe(HubsFC<0)
 gene_symDe(HubsFC>0)
 
 %% Subgraph
+%  2    {'ZMYND10'}
+% 15    {'NGEF'   }
+% 67    {'NEK2'   }
+% 84    {'CDHR3'  }
+% 96    {'PEBP4'  }
+%120    {'PLPP2'  }
+%171    {'SFTPC'  }
+%175    {'SFTPB'  }
+%183    {'BUB1'   }
+%209    {'MAP7D2' }
 CentrMeasures = 'degree';
-node = 15;
+node = 209;
 sG = subgraph(G, [node; neighbors(G,node)]);
 index = centrality(sG,CentrMeasures);
 Y = prctile(index,95);
@@ -124,7 +134,7 @@ if find(HubsFC<0)
     highlight(h3,Hubs_ind((HubsFC<0)),'NodeColor','cyan','Marker','h','MarkerSize',4)
 end
 
-title(CentrMeasures)
+title(gene_symDe(node))
 
 gene_symDe(HubsFC<0)
 gene_symDe(HubsFC>0)

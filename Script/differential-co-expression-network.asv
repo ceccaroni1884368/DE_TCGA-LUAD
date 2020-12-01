@@ -13,23 +13,34 @@ load('../TCGA-LUAD/data/data_DE.mat')
 % mFCDe: average Fold Chance of DEGs among the patients
 
 %% Apply log2 to dataNDe and dataCDe
-% ?!?
+% ?!?!?
 dataNDe = log2(dataNDe);
 dataCDe = log2(dataCDe);
 
 %% Parameter 
-PCC_th = .7; % Pearson Correlation Coefficient (PCC) threshold
+Z_th = 5; %  Z threshold
 
 %% Correlation analysis and  co-expression network figure
-% Normal data analysis
-[CN, pv_CN] = corr(dataCDe'); %compute Pearson's linear correlation coefficient
-CN(abs(CN)<PCC_th) = 0; %selecting only absolute values above the threshold
+%
+[N, pv_N] = corr(dataNDe'); %compute Pearson's linear correlation coefficient
+N = N-triu(tril(N));
+[C, pv_C] = corr(dataCDe'); %compute Pearson's linear correlation coefficient
+C = C-triu(tril(C));
 
-CN = CN-triu(tril(CN));
-adjCN = logical(CN);
+fisherZN = atanh(N); %compute fisher z-transformation 
+fisherZC = atanh(C); %compute fisher z-transformation 
+
+[nn, nN] = size(dataNDe);
+[nc, nC] = size(dataCDe);
+ZScore = (fisherZN - fisherZC)/sqrt(1/(nN-3)+1/(nC-3));  %compute zscore
+
+ZScore(abs(ZScore)<Z_th) = 0; %selecting only absolute values above the threshold
+
+adjCN = logical(ZScore);
 G_CN = graph(adjCN);
 figure;h1 = plot(G_CN,'Layout','force','UseGravity',true);
-title({'Differentially expressed genes';'Co-expression network in normal cells'})
+title({'Differentially expressed genes';'Differentially Co-expression network'})
+
 
 %% Degree distribution
 degree_CN = centrality(G_CN,'degree');
@@ -95,3 +106,35 @@ end
 title(CentrMeasures)
 
 gene_symDe(HubsFC<0)
+gene_symDe(HubsFC>0)
+
+%% Subgraph
+%  2    {'ZMYND10'}
+% 15    {'NGEF'   }
+% 67    {'NEK2'   }
+% 84    {'CDHR3'  }
+% 96    {'PEBP4'  }
+%120    {'PLPP2'  }
+%171    {'SFTPC'  }
+%175    {'SFTPB'  }
+%183    {'BUB1'   }
+%209    {'MAP7D2' }
+CentrMeasures = 'degree';
+node = 2;
+sG = subgraph(G, [node; neighbors(G,node)]);
+index = centrality(sG,CentrMeasures);
+Y = prctile(index,95);
+Hubs_ind = find(index>Y);
+HubsFC = mFCDe(Hubs_ind);
+figure; h3 = plot(sG,'Layout','force','UseGravity',true);
+highlight(h3,Hubs_ind,'NodeColor','r','Marker','h','MarkerSize',4)
+labelnode(h3,[1:numnodes(sG)], gene_symDe([node; neighbors(G,node)]))
+
+if find(HubsFC<0)
+    highlight(h3,Hubs_ind((HubsFC<0)),'NodeColor','cyan','Marker','h','MarkerSize',4)
+end
+
+title(CentrMeasures)
+
+gene_symDe(HubsFC<0)
+gene_symDe(HubsFC>0)
