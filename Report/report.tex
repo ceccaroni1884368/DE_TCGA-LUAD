@@ -40,7 +40,7 @@ BCOR5mm, % Binding correction
 
 %\subtitle{Subtitle} % Uncomment to display a subtitle
 
-\author{\spacedlowsmallcaps{John Smith \& James Smith}\\ \spacedlowsmallcaps{Group nn}} % The article author(s) - author affiliations need to be specified in the AUTHOR AFFILIATIONS block
+\author{\spacedlowsmallcaps{John Smith \& James Smith}\\ \spacedlowsmallcaps{Group $08$}} % The article author(s) - author affiliations need to be specified in the AUTHOR AFFILIATIONS block
 
 \date{} % An optional date to appear under the author(s)
 
@@ -121,10 +121,10 @@ $$
 
 The values obtained are shown on the following histogram (Figure~\ref{fig:1}).
 
-\begin{figure}[!h]
+\begin{figure}[H]
 \centering 
 \includegraphics[width=0.5\columnwidth]{Hist_FC} 
-\caption[Histogram of FC]{} % The text in the square bracket is the caption for the list of figures while the text in the curly brackets is the figure caption
+\caption[]{} % The text in the square bracket is the caption for the list of figures while the text in the curly brackets is the figure caption
 \label{fig:1} 
 \end{figure}
 Another criterion to find differentially expressed genes is to use Student’s t test for two conditions.
@@ -138,16 +138,16 @@ So we used a t-test to calculate the p-value.
 We applied the "fdr" method for correction multiple comparison. 
 The values obtained are shown on the following histogram (Figure~\ref{fig:2}).
 
-\begin{figure}[!h]
+\begin{figure}[H]
 \centering 
 \includegraphics[width=0.5\columnwidth]{Hist_FDR} 
-\caption[Histogram of $-\log{(FDR)}$]{} % The text in the square bracket is the caption for the list of figures while the text in the curly brackets is the figure caption
+\caption[]{} % The text in the square bracket is the caption for the list of figures while the text in the curly brackets is the figure caption
 \label{fig:2} 
 \end{figure}
 
 We have selected  $|$ fold change$\, | \ge 2.5$ and $fdr \le 0.05$ as threshold values. The result is the volcano plot in Figure~\ref{fig:3}.
 
-\begin{figure}[!h]
+\begin{figure}[H]
 \centering 
 \includegraphics[width=1\columnwidth]{VolcanoDEGs} 
 \caption[Volcano Plot]{} % The text in the square bracket is the caption for the list of figures while the text in the curly brackets is the figure caption
@@ -161,15 +161,44 @@ In the end $494$ genes ($237$ upregulated and $257$ downregulated genes) were fo
 \subsection{Co-expression networks}
 
 
-\begin{figure}[!h]
+\begin{figure}[H]
 \centering
-\subfloat[Co-expression network in normal cells]{\includegraphics[width=.45\columnwidth]{co-net_N.jpg}} \quad
-\subfloat[Co-expression network in cancer cells]{\includegraphics[width=.45\columnwidth]{co-net_C.jpg}\label{fig:ipsum}} 
-\caption[Co-expression network in normal and cancer cells]{Co-expression network in normal and cancer cells} % The text in the square bracket is the caption for the list of figures while the text in the curly brackets is the figure caption
-\label{fig:esempio}
+\subfloat[Normal cells]{\includegraphics[width=.45\columnwidth]{co-net_N.jpg}} \quad
+\subfloat[Cancer cells]{\includegraphics[width=.45\columnwidth]{co-net_C.jpg}\label{fig:ipsum}} 
+\caption[Co-expression network]{Co-expression network} % The text in the square bracket is the caption for the list of figures while the text in the curly brackets is the figure caption
+\label{fig:4}
 \end{figure}
 
-\newpage
+
+\begin{figure}[H]
+\centering
+\subfloat[Normal cells]{\includegraphics[width=.45\columnwidth]{co-net_N_deg_distr.jpg}} \quad
+\subfloat[Cancer cells]{\includegraphics[width=.45\columnwidth]{co-net_C_deg_distr.jpg}\label{fig:ipsum}} 
+\caption[Co-expression network Degree Distribution]{Co-expression network in normal and cancer cells} % The text in the square bracket is the caption for the list of figures while the text in the curly brackets is the figure caption
+\label{fig:5}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\subfloat[Degree]{\includegraphics[width=.45\columnwidth]{co-net_N_degree.jpg}} \quad
+\subfloat[Closeness]{\includegraphics[width=.45\columnwidth]{co-net_N_closeness.jpg}\label{fig:ipsum}} \\
+\subfloat[Betweenness]{\includegraphics[width=.45\columnwidth]{co-net_N_betweenness.jpg}} \quad
+\subfloat[Eighenvector]{\includegraphics[width=.45\columnwidth]{co-net_N_eigenvector.jpg}}
+\caption[Centrality Measures Co-Net in normal cells]{Centrality Measures in Normal Cells} % The text in the square bracket is the caption for the list of figures while the text in the curly brackets is the figure caption
+\label{fig:6}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\subfloat[Degree]{\includegraphics[width=.45\columnwidth]{co-net_C_degree.jpg}} \quad
+\subfloat[Closeness]{\includegraphics[width=.45\columnwidth]{co-net_C_closeness.jpg}\label{fig:ipsum}} \\
+\subfloat[Betweenness]{\includegraphics[width=.45\columnwidth]{co-net_C_betweenness.jpg}} \quad
+\subfloat[Eighenvector]{\includegraphics[width=.45\columnwidth]{co-net_C_eigenvector.jpg}}
+\caption[Centrality Measures Co-Net in cancer cells]{Centrality Measures in Cancer Cells} % The text in the square bracket is the caption for the list of figures while the text in the curly brackets is the figure caption
+\label{fig:7}
+\end{figure}
+
+
 % Differential Co-NET------------------------------------------------
 
 \subsection{Differential Co-expressed Network}
@@ -187,47 +216,178 @@ $$
 Z = \frac{z_1 - z_2}{\sqrt{\frac{1}{n_1 - 3}+\frac{1}{n_2 - 3}}}
 $$
 
-where $n_1$ and $n_2$ represent the sample size for each of the conditions. Finally we set $|Z|> 5$ as threshold; we get the graph of the Figure~\ref{fig:5}.
-\begin{figure}[!h]
+where $n_1$ and $n_2$ represent the sample size for each of the conditions. Finally we set $|Z|> 5$ as threshold; we get the graph of the Figure~\ref{fig:8}.
+\begin{figure}[H]
 \centering 
 \includegraphics[width=0.6\columnwidth]{diff-co-net} 
 \caption[Differentially Co-expression network]{Differentially Co-expression network} % The text in the square bracket is the caption for the list of figures while the text in the curly brackets is the figure caption
-\label{fig:5} 
+\label{fig:8} 
 \end{figure}
 
-\begin{figure}[!h]
+\begin{figure}[H]
 \centering 
 \includegraphics[width=0.6\columnwidth]{diff-co-net_deg_distr} 
 \caption[Differentially Co-expression network Degree Distribution]{Differentially Co-expression network Degree Distribution} % The text in the square bracket is the caption for the list of figures while the text in the curly brackets is the figure caption
-\label{fig:6} 
+\label{fig:9} 
 \end{figure}
 
-\begin{figure}[!h]
+\begin{figure}[H]
 \centering
 \subfloat[Degree]{\includegraphics[width=.45\columnwidth]{diff-co-net_degree.jpg}} \quad
 \subfloat[Closeness]{\includegraphics[width=.45\columnwidth]{diff-co-net_closeness.jpg}\label{fig:ipsum}} \\
 \subfloat[Betweenness]{\includegraphics[width=.45\columnwidth]{diff-co-net_betweenness.jpg}} \quad
 \subfloat[Eighenvector]{\includegraphics[width=.45\columnwidth]{diff-co-net_eigenvector.jpg}}
 \caption[Centrality Measures Differential Co-Net]{Centrality Measures} % The text in the square bracket is the caption for the list of figures while the text in the curly brackets is the figure caption
-\label{fig:esempio}
+\label{fig:10}
 \end{figure}
 
-\newpage
+\subsubsection{Subnetwork plot of the most relevant genes}
+
+\begin{figure}[H]
+\centering
+\subfloat[]{\includegraphics[width=.45\columnwidth]{diff-co-net_subgraphs/BUB1.jpg}} \quad
+\subfloat[]{\includegraphics[width=.45\columnwidth]{diff-co-net_subgraphs/CDHR3.jpg}\label{fig:ipsum}}
+\captionsetup{labelformat=empty}
+\end{figure}
+\begin{figure}[H]
+\centering
+\subfloat[]{\includegraphics[width=.45\columnwidth]{diff-co-net_subgraphs/MAP7D2.jpg}} \quad
+\subfloat[]{\includegraphics[width=.45\columnwidth]{diff-co-net_subgraphs/NEK2.jpg}}
+\captionsetup{labelformat=empty}
+\end{figure}
+\begin{figure}[H]
+\centering
+\subfloat[]{\includegraphics[width=.45\columnwidth]{diff-co-net_subgraphs/NGEF.jpg}} \quad
+\subfloat[]{\includegraphics[width=.45\columnwidth]{diff-co-net_subgraphs/PEBP4.jpg}\label{fig:ipsum}}
+\captionsetup{labelformat=empty}
+\end{figure}
+\begin{figure}[H]
+\centering
+\subfloat[]{\includegraphics[width=.45\columnwidth]{diff-co-net_subgraphs/PLPP2.jpg}} \quad
+\subfloat[]{\includegraphics[width=.45\columnwidth]{diff-co-net_subgraphs/SFTPB.jpg}}
+\captionsetup{labelformat=empty}
+\end{figure}
+\begin{figure}[H]
+\centering
+\subfloat[]{\includegraphics[width=.45\columnwidth]{diff-co-net_subgraphs/SFTPC.jpg}} \quad
+\subfloat[]{\includegraphics[width=.45\columnwidth]{diff-co-net_subgraphs/ZMYND10.jpg}}
+\captionsetup{labelformat=empty}
+\caption[Subnetwork plot of the most relevant genes]{} % The text in the square bracket is the caption for the list of figures while the text in the curly brackets is the figure caption
+\label{fig:11}
+\end{figure}
+
 %----------------------------------------------------------------------------------------
 %	RESULTS AND DISCUSSION
 %----------------------------------------------------------------------------------------
 
 \section{Results and Discussion}
-\begin{figure}[!h]
+
+\subsection*{Co-expression networks}
+\begin{figure}[H]
+\centering
+\subfloat[Normal cells]{\includegraphics[width=.45\columnwidth]{co-net_N_compare_hub_sets.jpg}} \quad
+\subfloat[Cancer cells]{\includegraphics[width=.45\columnwidth]{co-net_C_compare_hub_sets.jpg}\label{fig:ipsum}} 
+\caption[Co-expression network compare hub sets]{Co-expression network compare hub sets} % The text in the square bracket is the caption for the list of figures while the text in the curly brackets is the figure caption
+\label{fig:12}
+\end{figure}
+
+\begin{table}[H]
+  \centering
+  \makebox[0cm]{
+  \footnotesize
+  \begin{tabular}{p{1.3cm}||p{1cm}|p{1.7cm}|p{1.7cm}|p{1.7cm}|p{1.7cm}|p{1.7cm}|p{1.7cm} |p{1cm}}
+	 \hline\hline
+ 	 Gene & Degree & Betweeness&Closeness& Eigenvector & Betweeness 95\%& Closeness 95\% & Eigenvector 95\% & Degree 99\%\\
+ 	 \hline  \hline
+   	TPX2	 &  89  & $200$ & $0.00120$ & $0.00979$  & NO & YES& YES  & NO\\
+   	BUB1B	 & 90   & $194$ & $0.00113$ & $0.00997$ & NO &YES & YES  & YES\\
+   	KIF4A	 &  90  & $213$ &$0.00113$  &$0.01012$  &NO  &YES & YES  & YES\\
+   	HJURP	 &  90  & $200$ &$0.00116$  & $0.00974$ &NO  &YES & YES  &NO \\
+    NCAPG		 &  89  & $189$ & $0.00120$ & $0.00978$ & NO &YES & YES  & NO\\
+   	DLGAP5	 & 89   & $184$ & $0.00120$ & $0.00981$ & NO & YES& YES  &NO \\
+   	MELK	 &  89  & $15.9$ & $0.00113$ &$0.00982$  &NO  &NO & YES  &NO \\
+   	SKA3	 &  89  &  $181$  &$0.00116$ &  $0.00982$  &NO & YES  & YES&NO\\
+   	CKAP2L	 &  90  & $13.4$ & $0.00121$ &$0.00986$  &NO  &YES &YES   &YES \\
+   	EXO1	 &  89  & $189$ & $0.00120$ & $0.00978$ & NO & YES& YES  & NO\\
+
+	 \hline
+  \end{tabular}
+  }
+\caption[Co-expression network compare hub sets]{Co-expression network compare hub sets}
+\label{tab:1}
+\end{table}
+
+\begin{table}[H]
+  \centering
+  \makebox[0cm]{
+  \footnotesize
+  \begin{tabular}{p{1.3cm}||p{1.5cm}|p{1.5cm}|p{2cm}|p{2cm}|p{1.8cm}|p{1.8cm}|p{2.1cm} |p{2.1cm}}
+	 \hline\hline
+ 	 Gene & Degree 95\% Normal & Degree 95\% Cancer & Betweeness 95\% Normal&Betweeness 95\% Cancer &Closeness 95\% Normal & Closeness 95\% Cancer & Eigenvector 95\% Normal & Eigenvector 95\% Cancer\\
+ 	 \hline  \hline
+   	TPX2 *	 	&	YES	&	YES	&	NO	&	NO	&	NO	&	YES	&	NO	&	YES	\\
+   	BUB1B	 	&	NO	&	YES	&	NO	&	NO	&	NO	&	YES	&	NO	&	YES	\\
+   	KIF4A	 	&	NO	&	YES	&	NO	&	NO	&	NO	&	YES	&	NO	&	YES	\\
+   	HJURP *	&	YES	&	YES	&	NO	&	NO	&	NO	&	YES	&	NO	&	YES	\\
+    NCAPG	*	&	YES	&	YES	&	NO	&	NO	&	NO	&	YES	&	NO	&	YES	\\
+   	DLGAP5		&	NO	&	YES	&	NO	&	NO	&	NO	&	YES	&	NO	&	YES	\\
+   	MELK	* 	&	YES	&	YES	&	NO	&	NO	&	NO	&	NO	&	NO	&	YES	\\
+   	SKA3			&	NO	&	YES	&	NO	&	NO	&	NO	&	YES	&	NO	&	YES	\\
+   	CKAP2L	*	&	YES	&	YES	&	NO	&	NO	&	NO	&	YES	&	NO	&	YES	\\
+   	EXO1	 	&	NO	&	YES	&	NO	&	NO	&	NO	&	YES	&	NO	&	YES	\\
+   	GTSE1		&	YES	&	NO	&	NO	&	NO	&	NO	&	NO	&	NO	&	NO	\\
+   	NDC80 		&	YES	&	NO	&	NO	&	NO	&	NO	&	NO	&	NO	&	NO	\\
+   	CDC6		&	YES	&	NO	&	NO	&	NO	&	NO	&	NO	&	NO	&	NO	\\
+    TOP2A 		&	YES	&	NO	&	NO	&	NO	&	NO	&	NO	&	NO	&	NO	\\
+    NUSAP1 	&	YES	&	NO	&	NO	&	NO	&	NO	&	NO	&	NO	&	NO	\\
+    CEP55		&	YES	&	NO	&	NO	&	NO	&	NO	&	NO	&	NO	&	NO	\\
+    CDCA5 		&	YES	&	NO	&	NO	&	NO	&	NO	&	NO	&	NO	&	NO	\\
+    SKA1 		&	YES	&	NO	&	NO	&	NO	&	NO	&	NO	&	NO	&	YES	\\
+
+	 \hline
+  \end{tabular}
+  }
+\caption[Co-expression network compare hub sets]{Co-expression network compare hub sets}
+\label{tab:2}
+\end{table}
+
+
+
+\subsection*{Differential Co-expression networks}
+\begin{figure}[H]
 \centering 
 \includegraphics[width=0.6\columnwidth]{diff-co-net_compare_hub_sets} 
 \caption[Differentially Co-expression network compare hub sets]{Differentially Co-expression network compare hub sets} % The text in the square bracket is the caption for the list of figures while the text in the curly brackets is the figure caption
-\label{fig:7} 
+\label{fig:13} 
 \end{figure}
 
 
+\begin{table}[H]
+  \centering
+  \makebox[0cm]{
+  \footnotesize
+  \begin{tabular}{p{1.3cm}||p{1.5cm}|p{2.1cm}|p{2cm}|p{2.1cm}}
+	 \hline\hline
+ 	 Gene & Degree 95\%& Betweeness 95\% &Closeness 95\% & Eigenvector 95\% \\
+ 	 \hline  \hline
+   	ZMYND10	&  YES	&	NO	&	NO   &	YES	\\
+   	NGEF	 	&	YES	&	NO	&	NO   &	YES	\\
+   	NEK2	 	&  YES	&	YES	&	YES  &	YES	\\
+   	CDHR3	 	&	YES	&	NO	&	NO   &	YES	\\
+   	PEBP4	 	&	YES	&	YES	&	YES  &	YES	\\
+   	PLPP2	 	&	YES	&	NO	&	NO   &	YES	\\
+   	SFTPC	 	&	YES	&	NO   &	YES  &	NO	\\
+   	SFTPB	 	&	YES	&	YES	&	YES  &	NO	\\
+   	BUB1	 	&	YES	&	YES	&	NO   &	NO	\\
+   	MAP7D2 	&	YES	&	NO	&	NO   &	YES	\\
 
-\newpage
+	 \hline
+  \end{tabular}
+  }
+\caption[Differential Co-expression network compare hub sets]{Differential Co-expression network compare hub sets}
+\label{tab:3}
+\end{table}
+
 %----------------------------------------------------------------------------------------
 %	BIBLIOGRAPHY
 %----------------------------------------------------------------------------------------
